@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Videos</title>
+</head>
+<body>
+<table>
+    <tr>
+    <th>Name</th>
+    <th>Link</th>
+  </tr>
+    {% for name, path in files.items() %}
+    <tr>
+        <td>{{ name }}</td>
+        <td>
+            <a href="play_video/{{ name }}">Click</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

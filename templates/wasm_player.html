@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ video.name }} - FAVP-WASM</title>
+</head>
+<body>
+  <video id="player" controls></video>
+  <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
+  <script>
+    const { createFFmpeg, fetchFile } = FFmpeg;
+    const ffmpeg = createFFmpeg({ log: true });
+    const transcode = async ({ target: {} }) => {
+      const { name } = "{{ video.name }}";
+      const { url } = "http://localhost:5000/get_video/sample.avi";
+
+      await ffmpeg.load();
+      ffmpeg.FS('writeFile', name, await fetchFile(url));
+      await ffmpeg.run('-i', name,  'output.mp4');
+      const data = ffmpeg.FS('readFile', 'output.mp4');
+      const video = document.getElementById('player');
+      video.src = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+    }
+    // document
+    //   .getElementById('uploader').addEventListener('change', transcode);
+    window.addEventListener('load', transcode);
+  </script>
+</body>
+</html>
