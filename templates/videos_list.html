@@ -3,20 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <title>List of Videos</title>
+
+    <style>
+
+        body{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+              background: #1D2B64;  /* fallback for old browsers */
+          background: -webkit-linear-gradient(to right, #1D2B64, #F8CDDA);  /* Chrome 10-25, Safari 5.1-6 */
+          background: linear-gradient(to right, #1D2B64, #F8CDDA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        
+        }
+
+table {
+font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+font-size: 14px;
+border-collapse: collapse;
+text-align: center;
+width: 100%;
+}
+th, td:first-child {
+background: #AFCDE7;
+color: white;
+padding: 10px 20px;
+}
+th, td {
+border-style: solid;
+border-width: 0 1px 1px 0;
+border-color: white;
+}
+td {
+background: #D8E6F3;
+}
+th:first-child, td:first-child {
+text-align: left;
+}
+
+.table__link{
+    padding-left: 20px;
+    padding-right: 20px;
+    text-decoration: none;
+    color: #000;
+}
+
+.table__link:active{
+    color: blueviolet;
+}
+
+.table__link:hover{
+    color: rgb(27, 1, 255);
+}
+
+.table__headline{
+     color: blueviolet;
+}
+       h1{
+           color: #fff;
+           text-align: center;
+       }
+    </style>
 </head>
 <body>
-<table>
+    <h1>Video List</h1>
+<table class="table">
     <tr>
-    <th>Name</th>
-    <th>Link</th>
+    <th class="table__headline">Name</th>
+    <th class="table__headline" colspan="4">Links</th>
   </tr>
     {% for name, path in files.items() %}
     <tr>
         <td>{{ name }}</td>
         <td>
-            <a href="play_video/{{ name }}">Click</a>
+            <a class="table__link" href="play_video/plyr/{{ name }}">Plyr</a>
+            
         </td>
+            <td>
+            <a class="table__link" href="play_video/videojs/{{ name }}">Videojs</a>
+            
+            </td>
+
+            <td>
+                <a class="table__link" href="play_video/mediaelement/{{ name }}">MediaElement</a>
+            </td>
+           
+<td>
+    <a class="table__link" href="play_video/html5/{{ name }}">HTML5</a>
+</td>
     </tr>
+
+    <!--<tr>
+    <td>{{ name }}</td>
+        <td>
+        <a class="table__link" href="play_video/videojs/{{ name }}">Videojs</a>
+        </td>
+    </tr>-->
+
+
+        <!--<tr>
+            <td>{{ name }}</td>
+            <td>
+                <a class="table__link" href="play_video/mediaelement/{{ name }}">MediaElement</a>
+            </td>
+        </tr>-->
+
+
+        <!--<tr>
+            <td>{{ name }}</td>
+            <td>
+                <a class="table__link" href="play_video/html5/{{ name }}">HTML5</a>
+            </td>
+        </tr>-->
+
+
     {% endfor %}
 </table>
 </body>

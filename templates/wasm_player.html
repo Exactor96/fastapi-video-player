@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ video.name }} - FAVP-WASM</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
 </head>
 <body>
-  <video id="player" controls></video>
+  <video id="player" controls>
+        <source src="/get_video/{{video.name}}" type='video/mp4'>
+  </video>
+
   <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
+
   <script>
+
+    const player = new Plyr('#player');
     const { createFFmpeg, fetchFile } = FFmpeg;
     const ffmpeg = createFFmpeg({ log: true });
     const transcode = async ({ target: {} }) => {

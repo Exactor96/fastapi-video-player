@@ -4,10 +4,12 @@ import uvicorn as uvicorn
 from fastapi import FastAPI
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 
 files = {
     item: os.path.join('samples_directory', item)
@@ -16,6 +18,7 @@ files = {
 
 some_file_path = "samples_directory/file_sample.avi"
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 origins = [
     "http://localhost",
@@ -34,7 +37,7 @@ app.add_middleware(
 
 
 @app.get("/get_video/{video_name}")
-async def get_video(video_name: str, response_class=StreamingResponse):
+async def get_video(video_name: str, response_class=FileResponse):
     video_path = files.get(video_name)
     if video_path:
         return StreamingResponse(open(video_path, 'rb'))
@@ -42,14 +45,49 @@ async def get_video(video_name: str, response_class=StreamingResponse):
         return Response(status_code=404)
 
 
-@app.get('/play_video/{video_name}')
+@app.get('/play_video/plyr/{video_name}')
 async def play_video(video_name: str, request: Request, response_class=HTMLResponse):
     video_path = files.get(video_name)
     if video_path:
         return templates.TemplateResponse(
-            'play_video.html', {'request': request, 'video': {'path': video_path, 'name': video_name}})
+            'play_plyr.html', {'request': request, 'video': {'path': video_path, 'name': video_name}})
     else:
         return Response(status_code=404)
+
+
+
+@app.get('/play_video/videojs/{video_name}')
+async def play_video(video_name: str, request: Request, response_class=HTMLResponse):
+    video_path = files.get(video_name)
+    if video_path:
+        return templates.TemplateResponse(
+            'play_videojs.html', {'request': request, 'video': {'path': video_path, 'name': video_name}})
+    else:
+        return Response(status_code=404)
+
+
+@app.get('/play_video/mediaelement/{video_name}')
+async def play_video(video_name: str, request: Request, response_class=HTMLResponse):
+    video_path = files.get(video_name)
+    if video_path:
+        return templates.TemplateResponse(
+            'play_mediaelement.html', {'request': request, 'video': {'path': video_path, 'name': video_name}})
+    else:
+        return Response(status_code=404)
+
+
+@app.get('/play_video/html5/{video_name}')
+async def play_video(video_name: str, request: Request, response_class=HTMLResponse):
+    video_path = files.get(video_name)
+    if video_path:
+        return templates.TemplateResponse(
+            'play_html5.html', {'request': request, 'video': {'path': video_path, 'name': video_name}})
+    else:
+        return Response(status_code=404)
+
+
+
+
 
 
 @app.get('/play_video_wasm/{video_name}')
